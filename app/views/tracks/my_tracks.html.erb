@@ -1,0 +1,41 @@
+<div class="container margin-top-20">
+	<%= render "partials/header_nav" %>
+
+	<div id="song-container">
+		<% @songs.each do |song| %>
+			<!--One Song-->
+			<div class="row margin-top-20 one-song">
+				<div class="col-sm-3">
+					<% if song["track"]["album"]["name"] %>
+						<img src="<%= song["track"]["album"]["images"][0]["url"] %>" class="img-responsive" />
+					<% end %>
+				</div>
+				<div class="col-sm-9">
+					<h2><%= song["track"]["name"] %></h2>
+					<p>
+						By <%= song["track"]["artists"][0]["name"] %>
+					</p>
+					<p>
+						Album: <%= song["track"]["album"]["name"] %>
+					</p>
+					<div class="margin-top-20">
+						<audio controls>
+							<source src="<%= song["track"]["preview_url"] %>" type="audio/mpeg">
+						</audio>
+					</div>
+					<div class="margin-top-20">
+						<% if session[:spotify_token] %>
+							<%= form_tag(track_safe_path(song["track"]["id"]), method: :delete) do %>
+								<button type="submit" class="btn btn-danger btn-sm">
+									<span class="glyphicon glyphicon-remove margin-right-5"></span>
+									Remove Track
+								</button>
+							<% end %>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<!--/One Song-->
+		<% end %>
+	</div>
+</div>
